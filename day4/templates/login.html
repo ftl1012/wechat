@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WeChat By FTL1012</title>
+</head>
+<body>
+    <div style="width: 300px; margin: 0 auto ">
+        <img id="qcode" style="width: 300px; height: 300px;" src="https://login.weixin.qq.com/qrcode/{{ code }}"/>
+    </div>
+</body>
+
+<script src="/static/jquery-3.2.1.min.js"></script>
+<script>
+     $(function () {
+            polling();
+        });
+    // 发送长轮询
+    function polling() {
+        $.ajax({
+            url: '/polling/',
+            type: "GET",
+            dataType: 'json',
+            success: function (args) {
+                if(args.status == 408){
+                    polling();
+                }else if(args.status == 201){
+                    // 已经扫描，但未确认； --》获取微信用户的头像信息，继续发长轮询等待确认
+                    $("#qcode").attr('src', args.data);
+                    polling();
+                }else{
+                    // 此时手机端已经确认了信息,跳转主页面
+                    location.href = '/index/'
+                }
+
+            }
+        })
+    }
+
+</script>
+</html>

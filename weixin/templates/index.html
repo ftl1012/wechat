@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+</head>
+<body>
+    <h2>个人信息</h2>
+        <img src="https://wx.qq.com{{ data.User.HeadImgUrl }}">
+
+            {{ data.User.UserName }} --------  {{ data.User.NickName }}
+    <h3>最近联系人列表</h3>
+    <ul>
+        {% for item  in  data.ContactList %}
+            <li>{{ item.UserName }} -- {{ item.NickName }} -- {{ item.PYQuanPin }}</li>
+        {% endfor %}
+    </ul>
+    <li style="font-size: 20px; font-weight: bolder"><a target="_blank" href="/contactList/">获取更多联系人列表</a></li>
+    <ul>
+        {% for item  in  data.MPSubscribeMsgList %}
+            <li>{{ item.NickName }} </li>
+            <ul>
+                {% for row in item.MPArticleList %}
+                    <li style="font-weight: bold">{{ row.Digest }}</li>
+                    <li style="background-color: #dddddd"><a target="_blank" href={{ row.Url }}>{{ row.Title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+</body>
+</html>

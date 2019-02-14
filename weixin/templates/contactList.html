@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>联系人列表</title>
+</head>
+<body>
+    <h3>发送消息</h3>
+    <div>
+        <p><input id="user_id" type="text" placeholder="请输入用户唯一ID："/></p>
+        <p><input id="user_msg" type="text" placeholder="请输入发送消息内容："/></p>
+        <input id="sendMsg" type="button" value="提交">
+    </div>
+    <h3>联系人列表</h3>
+    <ul>
+          {% for row in obj.MemberList %}
+               <li>{{ row.NickName }} - {{ row.UserName }} -{{ row.Province }}</li>
+          {% endfor %}
+    </ul>
+</body>
+<script src="/static/jquery-3.2.1.min.js"></script>
+<script>
+    $(function () {
+        bindSendMessage();
+        bindGetMessage();
+    });
+
+    function bindSendMessage() {
+        $("#sendMsg").click(function () {
+            $.ajax({
+                url:"/sendMsg/",
+                type: "POST",
+                data: {"user_id": $("#user_id").val(), "user_msg": $("#user_msg").val()},
+                success: function (args) {
+                    console.log(args)
+                }
+
+            })
+        })
+    }
+
+
+    function bindGetMessage() {
+        $.ajax({
+            url:"/getMsg/",
+            type: "GET",
+            dataType: "json",
+            success: function (args) {
+                bindGetMessage();   // 不停的获取内容
+                console.log(args)
+            }
+
+        })
+    }
+
+</script>
+</html>
